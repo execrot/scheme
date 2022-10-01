@@ -74,6 +74,15 @@ abstract class AbstractSingle
       return false;
     }
 
+    foreach ($this->filters as $filter) {
+      if ($filter instanceof FilterAbstract) {
+        $value = $filter->filter($value);
+
+      } else if ($filter instanceof Closure) {
+        $value = $filter($value);
+      }
+    }
+
     foreach ($this->validators as $key => $validator) {
       if ($validator instanceof ValidatorAbstract && !$validator->isValid($value)) {
         $this->errors[] = get_class($validator);
@@ -88,9 +97,9 @@ abstract class AbstractSingle
 
   /**
    * @param mixed $value
-   * @return string|null
+   * @return int|bool|string|array|null
    */
-  public function normalize(mixed $value): int|bool|string|null
+  public function normalize(mixed $value): int|bool|string|null|array
   {
     if ($this->nullable && !$value) {
       return null;

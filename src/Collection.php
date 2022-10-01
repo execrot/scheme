@@ -32,7 +32,7 @@ class Collection extends AbstractMultiple
       return false;
     }
 
-    foreach ($values as $index => $value) {
+    foreach (($values ?? []) as $index => $value) {
       if (!$this->type->isValid($value)) {
         $this->errors[$index] = $this->type->getErrors();
       }
@@ -49,7 +49,7 @@ class Collection extends AbstractMultiple
   {
     $data = [];
 
-    foreach ($values as $value) {
+    foreach (($values ?? []) as $value) {
       $data[] = $this->type->normalize($value ?? null);
     }
 

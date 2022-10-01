@@ -43,19 +43,9 @@ class Map extends AbstractMultiple
   {
     $data = [];
 
-    $keys = [
-      ...array_keys($values),
-      ...array_keys($this->options)
-    ];
-
-    foreach ($keys as $key) {
-
-      if (isset($this->options[$key])) {
-        $option = $this->options[$key];
-        $normalizedValue = $option->normalize($values[$key] ?? null);
-      }
-
-      $data[$key] = $normalizedValue ?? $value[$key] ?? null;
+    foreach ($this->options as $key => $value) {
+      $option = $this->options[$key];
+      $data[$key] = $option->normalize($values[$key] ?? null);
     }
 
     return $data;
